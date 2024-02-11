@@ -9,6 +9,7 @@ const PieChart: React.FC<{ data: {item: string, percent: number}[] }> = ({ data 
       const chart = new Chart({
         container: chartContainer.current,
         autoFit: true,
+        height: 500
       });
 
       chart.coordinate({ type: 'theta', outerRadius: 0.8, innerRadius: 0.5 });

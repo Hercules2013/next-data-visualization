@@ -3,15 +3,17 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-import { Layout, Button, Card, Col, Row } from "antd";
+import { Layout, Button, Card, Col, Row, Spin } from "antd";
 const { Header, Content } = Layout;
 
-import { DownloadOutlined, AlignLeftOutlined, FilterOutlined } from '@ant-design/icons';
+import { DownloadOutlined, AlignLeftOutlined, FilterOutlined, LoadingOutlined } from '@ant-design/icons';
 
-import LineChart from "./components/linechart";
-import PieChart from "./components/piechart";
+import LineChart from "../components/linechart";
+// import PieChart from "../components/piechart";
 
-export default function Home() {
+import { trpc } from '../utils/trpc';
+
+const Home = () => {
   const lineData = [
     { name: 'London', 月份: 'Jan.', 月均降雨量: 18.9 },
     { name: 'London', 月份: 'Feb.', 月均降雨量: 28.8 },
@@ -31,13 +33,15 @@ export default function Home() {
     { name: 'Berlin', 月份: 'Aug.', 月均降雨量: 42.4 },
   ];
 
-  const pieData = [
-    { item: '事例一', count: 40, percent: 0.4 },
-    { item: '事例二', count: 21, percent: 0.21 },
-    { item: '事例三', count: 17, percent: 0.17 },
-    { item: '事例四', count: 13, percent: 0.13 },
-    { item: '事例五', count: 9, percent: 0.09 },
-  ];
+  // const pieData = [
+  //   { item: '事例一', count: 40, percent: 0.4 },
+  //   { item: '事例二', count: 21, percent: 0.21 },
+  //   { item: '事例三', count: 17, percent: 0.17 },
+  //   { item: '事例四', count: 13, percent: 0.13 },
+  //   { item: '事例五', count: 9, percent: 0.09 },
+  // ];
+
+  // const pieData = trpc.hello.useQuery({ text: 'client' });
 
   return (  
     <div className={styles.main}>
@@ -47,7 +51,7 @@ export default function Home() {
       <Content className={styles.content}>
         <div className={styles.titlebar}>
           <div>Page title</div>
-          <div>
+          <div className={styles.buttonbar}>
             <Button icon={<DownloadOutlined />}>
               Export to PDF
             </Button>
@@ -67,11 +71,26 @@ export default function Home() {
           </Col>
           <Col span={12}>
             <Card title="Chart Title">
-              <PieChart data={pieData} /> 
+              {/* <PieChart data={pieData} />  */}
+              <div className={styles.loading}>
+                <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+              </div>
             </Card>
           </Col>
         </Row>
       </Content>
     </div>
   );
+
+  // const hello = trpc.hello.useQuery({ text: 'client' });
+  // if (!hello.data) {
+  //   return <div>Loading...</div>;
+  // }
+  // return (
+  //   <div>
+  //     <p>{hello.data.greeting}</p>
+  //   </div>
+  // );
 }
+
+export default trpc.withTRPC(Home);

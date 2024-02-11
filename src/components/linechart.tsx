@@ -9,6 +9,7 @@ const LineChart: React.FC<{ data: any[] }> = ({ data }) => {
       const chart = new Chart({
         container: chartContainer.current,
         autoFit: true,
+        height: 500
       });
 
       chart
